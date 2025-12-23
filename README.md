@@ -1,18 +1,42 @@
-# Strapi Plugin Redirects
+<div align="center">
+<h1>Strapi Redirects & SEO Manager</h1>
 
-A powerful Strapi plugin for managing URL redirects directly from the admin panel. Create, update, and track redirects with hit counters, bulk import capabilities, and seamless integration with your Strapi application.
+<p align="center">
+  <a href="https://www.npmjs.com/package/strapi-plugin-redirect-urls">
+    <img src="https://img.shields.io/npm/v/strapi-plugin-redirect-urls.svg" alt="NPM Version" />
+  </a>
+  <a href="https://www.npmjs.com/package/strapi-plugin-redirect-urls">
+    <img src="https://img.shields.io/npm/dm/strapi-plugin-redirect-urls.svg" alt="Monthly Downloads" />
+  </a>
+  <img src="https://img.shields.io/badge/Strapi-v5-purple" alt="Supports Strapi v5" />
+  <img src="https://img.shields.io/badge/License-MIT-blue" alt="License" />
+</p>
 
-## Features
+<p>
+  <b>Don't lose traffic during migrations.</b> Manage URL redirects, track hit counts, and bulk import 301 redirects directly from your Strapi Admin Panel.
+</p>
 
-- 🎯 **Easy Redirect Management**: Create, edit, and delete redirects from the Strapi admin panel
-- 📊 **Hit Tracking**: Monitor redirect usage with built-in hit counters
-- 📥 **Bulk Import**: Import multiple redirects at once via CSV
-- 🔍 **Path Lookup**: Fast redirect lookup API endpoint
-- 🎨 **Modern UI**: Built with Strapi Design System for a consistent admin experience
-- 🔒 **Type Safe**: Full TypeScript support
-- ⚡ **Performance**: Optimized for fast redirect resolution
+</div>
 
-## Installation
+<br />
+
+> [!NOTE]  
+> **Compatible with Strapi v5.** This plugin is designed to work seamlessly with the latest Strapi Design System and API.
+
+---
+
+## ✨ Features
+
+- 🎯 **Visual Management**: Create, edit, and delete redirects effortlessly via the Admin Panel.
+- 📊 **Analytics & Tracking**: Built-in hit counters to see which redirects are actually being used.
+- 📥 **Bulk CSV Import**: Migrating from another CMS? Import thousands of redirects in seconds.
+- ⚡ **High Performance**: Optimized lookup algorithm designed for minimal latency on frontend requests.
+- 🛡️ **Type-Safe**: Full TypeScript support for reliable development.
+- 🎨 **Native Feel**: Built with the new Strapi 5 Design System for a consistent UI.
+
+![Plugin Screenshot](https://via.placeholder.com/800x400?text=Place+Your+Plugin+Screenshot+Here)
+
+## 🔧 Installation
 
 ```bash
 npm install strapi-plugin-redirect-urls
@@ -20,53 +44,51 @@ npm install strapi-plugin-redirect-urls
 yarn add strapi-plugin-redirect-urls
 ```
 
-## Configuration
+⚙️ Configuration
+The plugin is enabled by default. However, if you need to strictly define it, add the following to your config/plugins.ts file:
 
-The plugin is automatically enabled after installation. No additional configuration is required.
-
-### Optional: Enable in `config/plugins.ts`
-
-```typescript
+```bash
 export default {
+  // Note: The key must match the plugin name defined in your package.json
   'custom-redirects-plugin': {
     enabled: true,
   },
 };
+
 ```
 
-## Usage
 
-### Admin Panel
+🚀 Usage
+Managing Redirects via Admin Panel
+1.Navigate to the Redirects section in your Strapi admin panel sidebar.
+2.Click Create Redirect.
+3.Fill in the details:
+  *  From: The source URL path (e.g., /old-blog/post-1).
+  *  To: The destination URL path (e.g., /blog/new-post-1).
+  *  Type: Select 301 Moved Permanently (Standard for SEO).
 
-1. Navigate to the **Redirects** section in your Strapi admin panel sidebar
-2. Click **Create Redirect** to add a new redirect
-3. Fill in the redirect details:
-   - **From**: The source URL path (e.g., `/old-page`)
-   - **To**: The destination URL path (e.g., `/new-page`)
-   - **Type**: Redirect type (currently supports 301 - Moved Permanently)
+📂 Bulk Import via CSV
+Perfect for site migrations. Your CSV file must follow this format:
 
-### Bulk Import
+```bash
+from,to,type
+/old-about,/about,moved_permanently_301
+/products/old-item,/shop/item-123,moved_permanently_301
+```
 
-1. Click **Import CSV** button
-2. Upload a CSV file with the following format:
-   ```csv
-   from,to,type
-   /old-page-1,/new-page-1,moved_permanently_301
-   /old-page-2,/new-page-2,moved_permanently_301
-   ```
-3. The plugin will import all valid redirects and report any skipped entries
+1.Click the Import CSV button in the plugin dashboard.
+2.Upload your file.
+3.The system will process the file and report any skipped entries.
 
-### API Endpoints
 
-#### Lookup Redirect
+💻 Frontend Integration
+To make the redirects work, your frontend needs to query Strapi before rendering a 404 page.
 
-```http
+API Endpoint
 GET /api/custom-redirects-plugin/find?from=/old-page
-```
 
-**Response:**
-
-```json
+Response:
+```bash
 {
   "from": "/old-page",
   "to": "/new-page",
@@ -74,119 +96,93 @@ GET /api/custom-redirects-plugin/find?from=/old-page
 }
 ```
 
-#### Admin API Endpoints
+Example: Next.js Middleware (App Router)
+This is the most performant way to handle redirects in Next.js (Edge Runtime).
 
-All admin endpoints require authentication:
-
-- `GET /api/custom-redirects-plugin/redirects` - List all redirects
-- `GET /api/custom-redirects-plugin/redirects/:id` - Get a single redirect
-- `POST /api/custom-redirects-plugin/redirects` - Create a redirect
-- `PUT /api/custom-redirects-plugin/redirects/:id` - Update a redirect
-- `DELETE /api/custom-redirects-plugin/redirects/:id` - Delete a redirect
-- `POST /api/custom-redirects-plugin/redirects/bulk-delete` - Delete multiple redirects
-- `POST /api/custom-redirects-plugin/redirects/bulk-import` - Bulk import redirects
-
-### Implementing Redirects in Your Application
-
-To actually perform the redirects in your frontend application, you'll need to implement middleware or a route handler that checks for redirects. Here's an example:
-
-#### Next.js Example
-
-```typescript
-// middleware.ts or pages/_middleware.ts
+```bash
+// middleware.ts
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
-  // Call your Strapi API to check for redirects
-  const response = await fetch(
-    `${process.env.STRAPI_URL}/api/custom-redirects-plugin/find?from=${path}`
-  );
-
-  if (response.ok) {
-    const redirect = await response.json();
-    return NextResponse.redirect(
-      new URL(redirect.to, request.url),
-      parseInt(redirect.type.split('_')[1]) // Extract status code
+  try {
+    // 1. Check Strapi for a matching redirect
+    const response = await fetch(
+      `${process.env.STRAPI_URL}/api/custom-redirects-plugin/find?from=${path}`,
+      { 
+        method: 'GET',
+        headers: {
+            // Add Authorization header if your endpoint is private
+            // 'Authorization': `Bearer ${process.env.API_TOKEN}` 
+        },
+        next: { revalidate: 60 } // Optional: Cache result for 60 seconds
+      }
     );
+
+    if (response.ok) {
+      const redirect = await response.json();
+      const status = parseInt(redirect.type.split('_')[1]) || 301;
+      
+      // 2. Perform the redirect
+      return NextResponse.redirect(new URL(redirect.to, request.url), status);
+    }
+  } catch (error) {
+    // Fail silently so the site doesn't crash if Strapi is down
+    console.error('Redirect lookup failed:', error);
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: '/:path*',
+  // Exclude static files, images, and API routes from the check
+  matcher: '/((?!api|_next/static|_next/image|favicon.ico).*)',
 };
 ```
 
-#### Express.js Example
+Example: Express.js
 
-```javascript
+```bash
 app.use(async (req, res, next) => {
-  const response = await fetch(
-    `${process.env.STRAPI_URL}/api/custom-redirects-plugin/find?from=${req.path}`
-  );
+  try {
+    const response = await fetch(
+      `${process.env.STRAPI_URL}/api/custom-redirects-plugin/find?from=${req.path}`
+    );
 
-  if (response.ok) {
-    const redirect = await response.json();
-    return res.redirect(parseInt(redirect.type.split('_')[1]), redirect.to);
+    if (response.ok) {
+      const redirect = await response.json();
+      const statusCode = parseInt(redirect.type.split('_')[1]) || 301;
+      return res.redirect(statusCode, redirect.to);
+    }
+  } catch (err) {
+    // Proceed to normal routing if lookup fails
   }
-
+  
   next();
 });
 ```
 
-## Content Type
+🏗️ Data Structure
+The plugin creates a Redirect content type with the following schema:
+<img width="582" height="268" alt="image" src="https://github.com/user-attachments/assets/d9372d40-6b20-4b4a-b1d3-ebf1288943f2" />
 
-The plugin creates a `redirect` content type with the following fields:
 
-- `from` (string, required, unique): Source URL path
-- `to` (string, required): Destination URL path
-- `type` (enumeration, required): Redirect type (currently only `moved_permanently_301`)
-- `hits` (integer, default: 0): Number of times the redirect has been used
+📦 Requirements
+* Strapi: v5.27.0 or higher
+* Node.js: 18.x or 20.x
 
-## Requirements
-
-- Strapi v5.27.0 or higher
-- Node.js 18.x or 20.x
-- npm 6.0.0 or higher
-
-## Development
-
-```bash
-# Install dependencies
-npm install
-
-# Build the plugin
-npm run build
-
-# Watch for changes
-npm run watch
-
-# Verify the plugin
-npm run verify
-```
-
-## Contributing
-
+🤝 Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.
+ 1.Fork the repository
+ 2.Create your feature branch (git checkout -b feature/AmazingFeature)
+ 3.Commit your changes (git commit -m 'Add some AmazingFeature')
+ 4.Push to the branch (git push origin feature/AmazingFeature)
+ 5.Open a Pull Request
 
-## License
+📄 License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Support
-
-For issues and feature requests, please use the [GitHub Issues](https://github.com/MoveoTech/strapi-plugin-redirect-urls/issues) page.
-
-## Changelog
-
-### 1.0.0
-
-- Initial release
-- Basic redirect management
-- Hit tracking
-- Bulk import via CSV
-- Admin panel UI
+🆘 Support
+For issues and feature requests, please use the GitHub Issues page.
