@@ -1,0 +1,110 @@
+{
+  "name": "strapi-plugin-redirects-urls",
+  "version": "1.0.0",
+  "description": "Manage URL redirects from within the Strapi admin panel",
+  "keywords": [
+    "strapi",
+    "plugin",
+    "redirects",
+    "url-redirect",
+    "seo",
+    "url-management",
+    "strapi-plugin"
+  ],
+  "type": "commonjs",
+  "main": "./dist/server/index.js",
+  "module": "./dist/server/index.mjs",
+  "types": "./dist/server/src/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    "./strapi-admin": {
+      "types": "./dist/admin/src/index.d.ts",
+      "source": "./admin/src/index.ts",
+      "import": "./dist/admin/index.mjs",
+      "require": "./dist/admin/index.js",
+      "default": "./dist/admin/index.js"
+    },
+    "./strapi-server": {
+      "types": "./dist/server/src/index.d.ts",
+      "source": "./server/src/index.ts",
+      "import": "./dist/server/index.mjs",
+      "require": "./dist/server/index.js",
+      "default": "./dist/server/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "strapi-plugin build",
+    "watch": "strapi-plugin watch",
+    "watch:link": "strapi-plugin watch:link",
+    "verify": "strapi-plugin verify",
+    "test:ts:front": "run -T tsc -p admin/tsconfig.json",
+    "test:ts:back": "run -T tsc -p server/tsconfig.json",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@strapi/design-system": "^2.0.0-rc.30",
+    "@strapi/icons": "^2.0.0-rc.30",
+    "react-intl": "^7.1.14"
+  },
+  "devDependencies": {
+    "@strapi/strapi": "^5.31.2",
+    "@strapi/sdk-plugin": "^5.3.2",
+    "prettier": "^3.6.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.1",
+    "styled-components": "^6.1.19",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.1",
+    "@types/minimatch": "^5.1.2",
+    "@strapi/typescript-utils": "^5.31.2",
+    "typescript": "^5.9.3",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-commonjs": "^25.0.7"
+  },
+  "peerDependencies": {
+    "@strapi/strapi": "^5.31.2",
+    "@strapi/sdk-plugin": "^5.3.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.1",
+    "styled-components": "^6.1.19"
+  },
+  "strapi": {
+    "kind": "plugin",
+    "name": "custom-redirects-plugin",
+    "displayName": "Redirects",
+    "description": "Manage URL redirects from within the Strapi admin panel"
+  },
+  "resolutions": {
+    "glob": "^10.5.0"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Daniel Yaakov",
+    "email": "daniely@moveo.co.il"
+  },
+  "maintainers": [
+    {
+      "name": "Daniel Yaakov",
+      "email": "daniely@moveo.co.il"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MoveoTech/strapi-plugin-redirect-urls.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MoveoTech/strapi-plugin-redirect-urls/issues"
+  },
+  "homepage": "https://github.com/MoveoTech/strapi-plugin-redirect-urls#readme",
+  "engines": {
+    "node": ">=18.0.0 <=20.x.x",
+    "npm": ">=6.0.0"
+  }
+}

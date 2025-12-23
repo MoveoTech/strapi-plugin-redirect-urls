@@ -1,0 +1,23 @@
+{
+  "plugin.name": "Redirections",
+  "plugin.description": "Gérer les redirections d'URL depuis le panneau d'administration Strapi",
+  "page.title": "Redirections",
+  "page.subtitle": "Gérer les redirections d'URL",
+  "button.create": "Créer une redirection",
+  "button.import": "Importer CSV",
+  "table.from": "De",
+  "table.to": "Vers",
+  "table.type": "Type",
+  "table.hits": "Clics",
+  "table.actions": "Actions",
+  "modal.create.title": "Créer une nouvelle redirection",
+  "modal.edit.title": "Modifier la redirection",
+  "form.from.label": "Chemin source",
+  "form.from.placeholder": "/ancienne-page",
+  "form.from.hint": "Le chemin source à rediriger (doit commencer par /)",
+  "form.to.label": "URL de destination",
+  "form.to.placeholder": "https://exemple.com/nouvelle-page ou /nouvelle-page",
+  "form.to.hint": "L'URL de destination (interne ou externe)",
+  "form.type.label": "Type de redirection",
+  "form.type.hint": "Code de statut HTTP pour la redirection"
+}

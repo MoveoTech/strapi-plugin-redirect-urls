@@ -1,0 +1,23 @@
+{
+  "plugin.name": "Redirects",
+  "plugin.description": "Manage URL redirects from within the Strapi admin panel",
+  "page.title": "Redirects",
+  "page.subtitle": "Manage URL redirects",
+  "button.create": "Create Redirect",
+  "button.import": "Import CSV",
+  "table.from": "From",
+  "table.to": "To",
+  "table.type": "Type",
+  "table.hits": "Hits",
+  "table.actions": "Actions",
+  "modal.create.title": "Create New Redirect",
+  "modal.edit.title": "Edit Redirect",
+  "form.from.label": "From Path",
+  "form.from.placeholder": "/old-page",
+  "form.from.hint": "The source path to redirect from (must start with /)",
+  "form.to.label": "To URL",
+  "form.to.placeholder": "https://example.com/new-page or /new-page",
+  "form.to.hint": "The destination URL (internal or external)",
+  "form.type.label": "Redirect Type",
+  "form.type.hint": "HTTP status code for the redirect"
+}
