@@ -34,7 +34,14 @@
 - 🛡️ **Type-Safe**: Full TypeScript support for reliable development.
 - 🎨 **Native Feel**: Built with the new Strapi 5 Design System for a consistent UI.
 
-![Plugin Screenshot](https://via.placeholder.com/800x400?text=Place+Your+Plugin+Screenshot+Here)
+<img width="1499" height="764" alt="image" src="https://github.com/user-attachments/assets/07005fb2-0ad9-40f8-b51d-aac93225202e" />
+
+<img width="837" height="395" alt="image" src="https://github.com/user-attachments/assets/e5377176-86ca-4d16-ab18-2f9f5ee4ee80" />
+
+<img width="830" height="554" alt="image" src="https://github.com/user-attachments/assets/6f7cef55-abe6-410e-bd1e-89efc53ca274" />
+
+
+
 
 ## 🔧 Installation
 
@@ -44,7 +51,7 @@ npm install strapi-plugin-redirect-urls
 yarn add strapi-plugin-redirect-urls
 ```
 
-⚙️ Configuration
+## ⚙️ Configuration
 The plugin is enabled by default. However, if you need to strictly define it, add the following to your config/plugins.ts file:
 
 ```bash
@@ -58,7 +65,7 @@ export default {
 ```
 
 
-🚀 Usage
+## 🚀 Usage
 Managing Redirects via Admin Panel
 1.Navigate to the Redirects section in your Strapi admin panel sidebar.
 2.Click Create Redirect.
@@ -67,7 +74,7 @@ Managing Redirects via Admin Panel
   *  To: The destination URL path (e.g., /blog/new-post-1).
   *  Type: Select 301 Moved Permanently (Standard for SEO).
 
-📂 Bulk Import via CSV
+## 📂 Bulk Import via CSV
 Perfect for site migrations. Your CSV file must follow this format:
 
 ```bash
@@ -81,7 +88,7 @@ from,to,type
 3.The system will process the file and report any skipped entries.
 
 
-💻 Frontend Integration
+## 💻 Frontend Integration
 To make the redirects work, your frontend needs to query Strapi before rendering a 404 page.
 
 API Endpoint
@@ -164,16 +171,17 @@ app.use(async (req, res, next) => {
 });
 ```
 
-🏗️ Data Structure
+## 🏗️ Data Structure
 The plugin creates a Redirect content type with the following schema:
-<img width="582" height="268" alt="image" src="https://github.com/user-attachments/assets/d9372d40-6b20-4b4a-b1d3-ebf1288943f2" />
+<img width="567" height="195" alt="image" src="https://github.com/user-attachments/assets/35869286-9020-4e7a-b484-ab8514e4a0b0" />
 
 
-📦 Requirements
+
+## 📦 Requirements
 * Strapi: v5.27.0 or higher
 * Node.js: 18.x or 20.x
 
-🤝 Contributing
+## 🤝 Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.
  1.Fork the repository
  2.Create your feature branch (git checkout -b feature/AmazingFeature)
@@ -181,8 +189,8 @@ Contributions are welcome! Please feel free to submit a Pull Request.
  4.Push to the branch (git push origin feature/AmazingFeature)
  5.Open a Pull Request
 
-📄 License
+## 📄 License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-🆘 Support
+## 🆘 Support
 For issues and feature requests, please use the GitHub Issues page.
