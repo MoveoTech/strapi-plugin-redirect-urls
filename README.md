@@ -15,9 +15,9 @@ A powerful Strapi plugin for managing URL redirects directly from the admin pane
 ## Installation
 
 ```bash
-npm install @strapi/plugin-redirects
+npm install strapi-plugin-redirect-urls
 # or
-yarn add @strapi/plugin-redirects
+yarn add strapi-plugin-redirect-urls
 ```
 
 ## Configuration
