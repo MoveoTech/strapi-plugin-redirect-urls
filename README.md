@@ -1,0 +1,1 @@
+# software-strapi-plugin-redirect-urls
