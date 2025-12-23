@@ -1,5 +1,5 @@
 {
-  "name": "strapi-plugin-redirects-urls",
+  "name": "strapi-plugin-redirect-urls",
   "version": "1.0.0",
   "description": "Manage URL redirects from within the Strapi admin panel",
   "keywords": [

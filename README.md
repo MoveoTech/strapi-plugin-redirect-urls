@@ -179,7 +179,7 @@ MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Support
 
-For issues and feature requests, please use the [GitHub Issues](https://github.com/MoveoTech/strapi-plugin-redirects-urls/issues) page.
+For issues and feature requests, please use the [GitHub Issues](https://github.com/MoveoTech/strapi-plugin-redirect-urls/issues) page.
 
 ## Changelog
 
