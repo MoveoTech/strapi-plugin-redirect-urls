@@ -44,7 +44,11 @@
     "verify": "strapi-plugin verify",
     "test:ts:front": "run -T tsc -p admin/tsconfig.json",
     "test:ts:back": "run -T tsc -p server/tsconfig.json",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "lint": "yarn run lint",
+    "format": "yarn format --continue -- --cache --cache-location='node_modules/.cache/.prettiercache'",
+    "format:fix": "yarn format -- --write",
+    "test": "yarn test:ts:front && yarn test:ts:back"
   },
   "dependencies": {
     "@strapi/design-system": "^2.0.0-rc.30",
