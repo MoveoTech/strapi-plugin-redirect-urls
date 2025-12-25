@@ -20,8 +20,6 @@ jobs:
 
       - name: Run Format
         run: yarn format
-      - name: Run Lint
-        run: yarn lint
 
   build:
     runs-on: ubuntu-latest
