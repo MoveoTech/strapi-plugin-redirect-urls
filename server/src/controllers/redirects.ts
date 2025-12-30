@@ -182,11 +182,15 @@ const redirectsController = ({ strapi }: { strapi: Core.Strapi }) => ({
 
       const sanitizedResult = sanitizeResponse(result);
 
-      ctx.body = {
-        imported: sanitizedResult.imported.length,
-        total: validRedirects.length,
+      const importedCount = sanitizedResult.imported?.length || 0;
+      const skippedCount = sanitizedResult.skipped?.length || 0;
+      const totalProcessed = importedCount + skippedCount;
+
+      ctx.body = sanitizeResponse({
+        imported: importedCount,
+        total: totalProcessed,
         skipped: sanitizedResult.skipped,
-      };
+      });
     } catch (err) {
       ctx.throw(500, err);
     }
