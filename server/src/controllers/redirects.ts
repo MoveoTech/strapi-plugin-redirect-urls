@@ -180,10 +180,12 @@ const redirectsController = ({ strapi }: { strapi: Core.Strapi }) => ({
         .service('redirects')
         .bulkCreate(validRedirects);
 
+      const sanitizedResult = sanitizeResponse(result);
+
       ctx.body = {
-        imported: result.imported.length,
+        imported: sanitizedResult.imported.length,
         total: validRedirects.length,
-        skipped: sanitizeResponse(result.skipped),
+        skipped: sanitizedResult.skipped,
       };
     } catch (err) {
       ctx.throw(500, err);
