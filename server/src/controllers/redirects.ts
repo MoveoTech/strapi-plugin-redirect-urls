@@ -1,4 +1,5 @@
 import type { Core } from '@strapi/strapi';
+import { sanitizeRedirectData, sanitizeResponse } from '../utils/sanitize';
 
 const redirectsController = ({ strapi }: { strapi: Core.Strapi }) => ({
   async find(ctx: any) {
@@ -9,7 +10,7 @@ const redirectsController = ({ strapi }: { strapi: Core.Strapi }) => ({
         .service('redirects')
         .find(query);
 
-      ctx.body = redirects;
+      ctx.body = sanitizeResponse(redirects);
     } catch (err) {
       ctx.throw(500, err);
     }
@@ -27,7 +28,7 @@ const redirectsController = ({ strapi }: { strapi: Core.Strapi }) => ({
         return ctx.notFound('Redirect not found');
       }
 
-      ctx.body = redirect;
+      ctx.body = sanitizeResponse(redirect);
     } catch (err) {
       ctx.throw(500, err);
     }
@@ -37,10 +38,16 @@ const redirectsController = ({ strapi }: { strapi: Core.Strapi }) => ({
     try {
       const { body } = ctx.request;
 
+      const sanitizedData = sanitizeRedirectData(body);
+
+      if (!sanitizedData.from || !sanitizedData.to) {
+        return ctx.badRequest('Missing required fields: from and to');
+      }
+
       const existing = await strapi
         .plugin('custom-redirects-plugin')
         .service('redirects')
-        .findByPath(body.from);
+        .findByPath(sanitizedData.from);
 
       if (existing) {
         return ctx.badRequest('A redirect with this "from" path already exists');
@@ -49,9 +56,9 @@ const redirectsController = ({ strapi }: { strapi: Core.Strapi }) => ({
       const redirect = await strapi
         .plugin('custom-redirects-plugin')
         .service('redirects')
-        .create(body);
+        .create(sanitizedData);
 
-      ctx.body = redirect;
+      ctx.body = sanitizeResponse(redirect);
     } catch (err) {
       ctx.throw(500, err);
     }
@@ -62,11 +69,13 @@ const redirectsController = ({ strapi }: { strapi: Core.Strapi }) => ({
       const { id } = ctx.params;
       const { body } = ctx.request;
 
-      if (body.from) {
+      const sanitizedData = sanitizeRedirectData(body);
+
+      if (sanitizedData.from) {
         const existing = await strapi
           .plugin('custom-redirects-plugin')
           .service('redirects')
-          .findByPath(body.from);
+          .findByPath(sanitizedData.from);
 
         if (existing && existing.id !== parseInt(id, 10)) {
           return ctx.badRequest('A redirect with this "from" path already exists');
@@ -76,9 +85,9 @@ const redirectsController = ({ strapi }: { strapi: Core.Strapi }) => ({
       const redirect = await strapi
         .plugin('custom-redirects-plugin')
         .service('redirects')
-        .update(parseInt(id, 10), body);
+        .update(parseInt(id, 10), sanitizedData);
 
-      ctx.body = redirect;
+      ctx.body = sanitizeResponse(redirect);
     } catch (err) {
       ctx.throw(500, err);
     }
@@ -92,7 +101,7 @@ const redirectsController = ({ strapi }: { strapi: Core.Strapi }) => ({
         .service('redirects')
         .delete(parseInt(id, 10));
 
-      ctx.body = redirect;
+      ctx.body = sanitizeResponse(redirect);
     } catch (err) {
       ctx.throw(500, err);
     }
@@ -101,12 +110,17 @@ const redirectsController = ({ strapi }: { strapi: Core.Strapi }) => ({
   async deleteMany(ctx: any) {
     try {
       const { ids } = ctx.request.body;
+
+      if (!Array.isArray(ids) || ids.some(id => typeof id !== 'number')) {
+        return ctx.badRequest('Invalid ids array');
+      }
+
       const result = await strapi
         .plugin('custom-redirects-plugin')
         .service('redirects')
         .deleteMany(ids);
 
-      ctx.body = result;
+      ctx.body = sanitizeResponse(result);
     } catch (err) {
       ctx.throw(500, err);
     }
@@ -135,11 +149,11 @@ const redirectsController = ({ strapi }: { strapi: Core.Strapi }) => ({
         .service('redirects')
         .incrementHits(redirect.id);
 
-      ctx.body = {
+      ctx.body = sanitizeResponse({
         from: redirect.from,
         to: redirect.to,
         type: redirect.type,
-      };
+      });
     } catch (err) {
       ctx.throw(500, err);
     }
@@ -153,15 +167,23 @@ const redirectsController = ({ strapi }: { strapi: Core.Strapi }) => ({
         return ctx.badRequest('Redirects must be an array');
       }
 
+      const sanitizedRedirects = redirects.map(redirect => sanitizeRedirectData(redirect));
+
+      const validRedirects = sanitizedRedirects.filter(r => r.from && r.to);
+
+      if (validRedirects.length === 0) {
+        return ctx.badRequest('No valid redirects to import');
+      }
+
       const result = await strapi
         .plugin('custom-redirects-plugin')
         .service('redirects')
-        .bulkCreate(redirects);
+        .bulkCreate(validRedirects);
 
       ctx.body = {
         imported: result.imported.length,
-        total: redirects.length,
-        skipped: result.skipped,
+        total: validRedirects.length,
+        skipped: sanitizeResponse(result.skipped),
       };
     } catch (err) {
       ctx.throw(500, err);
