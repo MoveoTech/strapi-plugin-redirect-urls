@@ -27,8 +27,6 @@ jobs:
           node-version: "20"
           registry-url: "https://registry.npmjs.org"
           cache: "yarn"
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Check if version changed
         id: version-check
@@ -60,14 +58,7 @@ jobs:
 
       - name: Publish to npm
         if: steps.version-check.outputs.changed == 'true'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          if [ -z "$NODE_AUTH_TOKEN" ]; then
-            echo "Error: NPM_TOKEN secret is not set"
-            exit 1
-          fi
-          npm publish
+        run: npm publish --provenance
 
       - name: Create GitHub Release
         if: steps.version-check.outputs.changed == 'true'
