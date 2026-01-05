@@ -27,6 +27,8 @@ jobs:
           node-version: "20"
           registry-url: "https://registry.npmjs.org"
           cache: "yarn"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Check if version changed
         id: version-check
@@ -45,13 +47,13 @@ jobs:
 
       - name: Build package
         if: steps.version-check.outputs.changed == 'true'
-        run: npm run build
+        run: yarn build
 
       - name: Run tests (if available)
         if: steps.version-check.outputs.changed == 'true'
         run: |
-          if npm run test 2>/dev/null; then
-            npm run test
+          if yarn test 2>/dev/null; then
+            yarn test
           else
             echo "No tests configured, skipping..."
           fi
@@ -61,6 +63,10 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "Error: NPM_TOKEN secret is not set"
+            exit 1
+          fi
           npm publish
 
       - name: Create GitHub Release
