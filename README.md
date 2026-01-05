@@ -40,8 +40,9 @@
 
 <img width="830" height="554" alt="image" src="https://github.com/user-attachments/assets/6f7cef55-abe6-410e-bd1e-89efc53ca274" />
 
+## 📄 Legal & Terms
 
-
+For legal terms and conditions, please refer to the [Terms & Conditions document](./legal/Terms_of_Service.docx).
 
 ## 🔧 Installation
 
@@ -52,6 +53,7 @@ yarn add strapi-plugin-redirect-urls
 ```
 
 ## ⚙️ Configuration
+
 The plugin is enabled by default. However, if you need to strictly define it, add the following to your config/plugins.ts file:
 
 ```bash
@@ -64,17 +66,19 @@ export default {
 
 ```
 
-
 ## 🚀 Usage
+
 Managing Redirects via Admin Panel
 1.Navigate to the Redirects section in your Strapi admin panel sidebar.
 2.Click Create Redirect.
 3.Fill in the details:
-  *  From: The source URL path (e.g., /old-blog/post-1).
-  *  To: The destination URL path (e.g., /blog/new-post-1).
-  *  Type: Select 301 Moved Permanently (Standard for SEO).
+
+- From: The source URL path (e.g., /old-blog/post-1).
+- To: The destination URL path (e.g., /blog/new-post-1).
+- Type: Select 301 Moved Permanently (Standard for SEO).
 
 ## 📂 Bulk Import via CSV
+
 Perfect for site migrations. Your CSV file must follow this format:
 
 ```bash
@@ -87,14 +91,15 @@ from,to,type
 2.Upload your file.
 3.The system will process the file and report any skipped entries.
 
-
 ## 💻 Frontend Integration
+
 To make the redirects work, your frontend needs to query Strapi before rendering a 404 page.
 
 API Endpoint
 GET /api/custom-redirects-plugin/find?from=/old-page
 
 Response:
+
 ```bash
 {
   "from": "/old-page",
@@ -118,11 +123,11 @@ export async function middleware(request: NextRequest) {
     // 1. Check Strapi for a matching redirect
     const response = await fetch(
       `${process.env.STRAPI_URL}/api/custom-redirects-plugin/find?from=${path}`,
-      { 
+      {
         method: 'GET',
         headers: {
             // Add Authorization header if your endpoint is private
-            // 'Authorization': `Bearer ${process.env.API_TOKEN}` 
+            // 'Authorization': `Bearer ${process.env.API_TOKEN}`
         },
         next: { revalidate: 60 } // Optional: Cache result for 60 seconds
       }
@@ -131,7 +136,7 @@ export async function middleware(request: NextRequest) {
     if (response.ok) {
       const redirect = await response.json();
       const status = parseInt(redirect.type.split('_')[1]) || 301;
-      
+
       // 2. Perform the redirect
       return NextResponse.redirect(new URL(redirect.to, request.url), status);
     }
@@ -166,31 +171,35 @@ app.use(async (req, res, next) => {
   } catch (err) {
     // Proceed to normal routing if lookup fails
   }
-  
+
   next();
 });
 ```
 
 ## 🏗️ Data Structure
+
 The plugin creates a Redirect content type with the following schema:
 <img width="567" height="195" alt="image" src="https://github.com/user-attachments/assets/35869286-9020-4e7a-b484-ab8514e4a0b0" />
 
-
-
 ## 📦 Requirements
-* Strapi: v5.27.0 or higher
-* Node.js: 18.x or 20.x
+
+- Strapi: v5.27.0 or higher
+- Node.js: 18.x or 20.x
 
 ## 🤝 Contributing
+
 Contributions are welcome! Please feel free to submit a Pull Request.
-  1. Fork the repository
-  2. Create your feature branch (git checkout -b feature/AmazingFeature)
-  3. Commit your changes (git commit -m 'Add some AmazingFeature')
-  4. Push to the branch (git push origin feature/AmazingFeature)
-  5. Open a Pull Request
+
+1. Fork the repository
+2. Create your feature branch (git checkout -b feature/AmazingFeature)
+3. Commit your changes (git commit -m 'Add some AmazingFeature')
+4. Push to the branch (git push origin feature/AmazingFeature)
+5. Open a Pull Request
 
 ## 📄 License
+
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 🆘 Support
+
 For issues and feature requests, please use the GitHub Issues page.
