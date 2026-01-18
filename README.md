@@ -42,7 +42,7 @@
 
 ## 📄 Legal & Terms
 
-For legal terms and conditions, please refer to the [Terms & Conditions document](./legal/Terms_of_Service.docx).
+For legal terms and conditions, please refer to the [Terms & Conditions document](./legal/TERMS_OF_SERVICE.md).
 
 ## 🔧 Installation
 
